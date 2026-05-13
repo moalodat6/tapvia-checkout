@@ -3,25 +3,33 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).end();
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-  const Stripe = require('stripe');
-  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  if (req.method !== 'POST') {
+    res.status(405).end();
+    return;
+  }
 
   try {
-    const { amount } = req.body;
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    const amount = req.body && req.body.amount ? req.body.amount : 6999;
     const allowed = [6999, 6998, 8997, 10496];
-    if (!allowed.includes(amount)) {
-      return res.status(400).json({ error: 'Invalid amount' });
+    
+    if (!allowed.includes(Number(amount))) {
+      res.status(400).json({ error: 'Invalid amount' });
+      return;
     }
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
+      amount: Number(amount),
       currency: 'usd',
-      payment_method_types: ['card', 'apple_pay', 'google_pay'],
     });
-    return res.status(200).json({ clientSecret: paymentIntent.client_secret });
+
+    res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 }
