@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1,
+    amount: 6999,
     currency: 'usd',
     automatic_payment_methods: { enabled: true },
   });
