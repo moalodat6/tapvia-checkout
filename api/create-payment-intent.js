@@ -11,20 +11,17 @@ export default async function handler(req, res) {
 
   try {
     const { amount } = req.body;
-
     const allowed = [6999, 6998, 8997, 10496];
     if (!allowed.includes(amount)) {
       return res.status(400).json({ error: 'Invalid amount' });
     }
-
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: 'usd',
       payment_method_types: ['card', 'apple_pay', 'google_pay'],
     });
-
-    res.status(200).json({ clientSecret: paymentIntent.client_secret });
+    return res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 }
