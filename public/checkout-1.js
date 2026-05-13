@@ -6,13 +6,12 @@
     s.onload = cb;
     document.head.appendChild(s);
   }
-
   function init() {
     loadStripe(function() {
       fetch('https://tapvia-checkout.vercel.app/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: 69.99 })
+        body: JSON.stringify({ amount: 1 })
       })
       .then(function(r) { return r.json(); })
       .then(function(data) {
@@ -35,7 +34,6 @@
       .catch(function(e) { console.error('Tapvia express error:', e); });
     });
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
