@@ -12,7 +12,7 @@
       fetch('https://tapvia-checkout.vercel.app/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: 6999 })
+        body: JSON.stringify({ amount: 1 })
       })
       .then(function(r) { return r.json(); })
       .then(function(data) {
