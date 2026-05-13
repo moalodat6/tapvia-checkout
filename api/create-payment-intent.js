@@ -15,16 +15,9 @@ export default async function handler(req, res) {
 
   try {
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-    const amount = req.body && req.body.amount ? req.body.amount : 6999;
-    const allowed = [6999, 6998, 8997, 10496];
-    
-    if (!allowed.includes(Number(amount))) {
-      res.status(400).json({ error: 'Invalid amount' });
-      return;
-    }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Number(amount),
+      amount: 6999,
       currency: 'usd',
     });
 
