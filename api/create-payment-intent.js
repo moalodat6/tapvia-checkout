@@ -8,22 +8,14 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (req.method !== 'POST') {
-    res.status(405).end();
-    return;
-  }
+  const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 6999,
+    currency: 'usd',
+    automatic_payment_methods: { enabled: true },
+  });
 
-  try {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: 6999,
-      currency: 'usd',
-      automatic_payment_methods: { enabled: true },
-    });
-
-    res.status(200).json({ clientSecret: paymentIntent.client_secret });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.setHeader('Content-Type', 'application/json');
+  res.statusCode = 200;
+  res.end(JSON.stringify({ clientSecret: paymentIntent.client_secret }));
 }
