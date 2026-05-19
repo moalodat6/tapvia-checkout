@@ -27,7 +27,7 @@
         el.on('confirm', function() {
           stripe.confirmPayment({
             elements: elements,
-            confirmParams: { return_url: 'https://checkout.shopfunnels.net/discount' }
+            confirmParams: { return_url: 'https://checkout.shopfunnels.net/thank-you-1' }
           });
         });
       })
