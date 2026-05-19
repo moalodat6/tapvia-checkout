@@ -11,7 +11,7 @@
       fetch('https://tapvia-checkout.vercel.app/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: 6999 })
+        body: JSON.stringify({ amount: 6998 })
       })
       .then(function(r) { return r.json(); })
       .then(function(data) {
@@ -27,7 +27,7 @@
         el.on('confirm', function() {
           stripe.confirmPayment({
             elements: elements,
-            confirmParams: { return_url: 'https://checkout.shopfunnels.net/discount }
+            confirmParams: { return_url: 'https://checkout.shopfunnels.net/discount' }
           });
         });
       })
