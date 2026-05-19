@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
   
   const amount = req.body && req.body.amount ? Number(req.body.amount) : 6999;
-  const allowed = [100, 6999, 6998, 8997, 10496];
+  const allowed = [6999, 6998, 8997, 10496];
   if (!allowed.includes(amount)) {
     res.setHeader('Content-Type', 'application/json');
     res.statusCode = 400;
